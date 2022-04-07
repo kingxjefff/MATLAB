@@ -1,0 +1,376 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Hwk5</title><meta name="generator" content="MATLAB 9.12"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-04-06"><meta name="DC.source" content="Hwk5.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Problem 1</a></li><li><a href="#3">problem 2</a></li><li><a href="#4">problem 3</a></li><li><a href="#5">problem 4</a></li><li><a href="#6">Problem 5</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><h2 id="2">Problem 1</h2><pre class="codeinput">figure(1);
+Ts = 0.4;
+
+Gs = tf(0.5, [1 0.5])
+Gscl = feedback(Gs,1)
+
+Gz = c2d(Gs, Ts)
+Gzcl = feedback(Gz, 1)
+hold <span class="string">on</span>;
+step(Gscl);
+step(Gzcl);
+
+hold <span class="string">off</span>;
+</pre><pre class="codeoutput">
+Gs =
+ 
+    0.5
+  -------
+  s + 0.5
+ 
+Continuous-time transfer function.
+
+
+Gscl =
+ 
+   0.5
+  -----
+  s + 1
+ 
+Continuous-time transfer function.
+
+
+Gz =
+ 
+    0.1813
+  ----------
+  z - 0.8187
+ 
+Sample time: 0.4 seconds
+Discrete-time transfer function.
+
+
+Gzcl =
+ 
+    0.1813
+  ----------
+  z - 0.6375
+ 
+Sample time: 0.4 seconds
+Discrete-time transfer function.
+
+</pre><img vspace="5" hspace="5" src="Hwk5_01.png" alt=""> <h2 id="3">problem 2</h2><pre class="codeinput">figure(2);
+Ts = 0.6;
+
+Gs = tf(2,[1 0.5])
+Gz = c2d(Gs, Ts)
+Gzcl = feedback(Gz, 0.04)
+
+hold <span class="string">on</span>;
+step(0.4*Gzcl)
+hold <span class="string">off</span>;
+</pre><pre class="codeoutput">
+Gs =
+ 
+     2
+  -------
+  s + 0.5
+ 
+Continuous-time transfer function.
+
+
+Gz =
+ 
+    1.037
+  ----------
+  z - 0.7408
+ 
+Sample time: 0.6 seconds
+Discrete-time transfer function.
+
+
+Gzcl =
+ 
+    1.037
+  ----------
+  z - 0.6993
+ 
+Sample time: 0.6 seconds
+Discrete-time transfer function.
+
+</pre><img vspace="5" hspace="5" src="Hwk5_02.png" alt=""> <h2 id="4">problem 3</h2><pre class="codeinput">figure(3);
+hold <span class="string">on</span>;
+
+
+Gs = tf(1, [1 1 0])
+Gscl = feedback(Gs, 1)
+step(Gscl);
+
+<span class="comment">% T = 1s</span>
+Ts = 1;
+Gz = c2d(Gs, Ts);
+Gzcl = feedback(Gz, 1)
+log(pole(Gzcl))/Ts
+step(Gzcl);
+
+<span class="comment">% T = 0.5s</span>
+Ts = 0.5;
+Gz = c2d(Gs, Ts);
+Gzcl = feedback(Gz, 1)
+log(pole(Gzcl))/Ts
+step(Gzcl);
+
+<span class="comment">% T = 0.1s</span>
+Ts = 0.1;
+Gz = c2d(Gs, Ts);
+Gzcl = feedback(Gz, 1)
+log(pole(Gzcl))/Ts
+step(Gzcl);
+hold <span class="string">off</span>;
+</pre><pre class="codeoutput">
+Gs =
+ 
+     1
+  -------
+  s^2 + s
+ 
+Continuous-time transfer function.
+
+
+Gscl =
+ 
+       1
+  -----------
+  s^2 + s + 1
+ 
+Continuous-time transfer function.
+
+
+Gzcl =
+ 
+  0.3679 z + 0.2642
+  -----------------
+  z^2 - z + 0.6321
+ 
+Sample time: 1 seconds
+Discrete-time transfer function.
+
+ans =
+  -0.2293 + 0.8907i
+  -0.2293 - 0.8907i
+
+Gzcl =
+ 
+   0.1065 z + 0.0902
+  --------------------
+  z^2 - 1.5 z + 0.6967
+ 
+Sample time: 0.5 seconds
+Discrete-time transfer function.
+
+ans =
+  -0.3614 + 0.9088i
+  -0.3614 - 0.9088i
+
+Gzcl =
+ 
+  0.004837 z + 0.004679
+  ---------------------
+  z^2 - 1.9 z + 0.9095
+ 
+Sample time: 0.1 seconds
+Discrete-time transfer function.
+
+ans =
+  -0.4742 + 0.8794i
+  -0.4742 - 0.8794i
+</pre><img vspace="5" hspace="5" src="Hwk5_03.png" alt=""> <h2 id="5">problem 4</h2><pre class="codeinput">hold <span class="string">on</span>;
+Gs = tf(1, [1 1]);
+Ts = 1;
+Gz = c2d(Gs, Ts)
+
+hold <span class="string">off</span>;
+</pre><pre class="codeoutput">
+Gz =
+ 
+    0.6321
+  ----------
+  z - 0.3679
+ 
+Sample time: 1 seconds
+Discrete-time transfer function.
+
+</pre><h2 id="6">Problem 5</h2><pre class="codeinput">syms <span class="string">z</span>
+C = (z-0.9)*(z-0.8)*(z^2-1.9*z+1);
+expand(C)
+roots([1 -3.6 4.95 -3.068 0.72])
+</pre><pre class="codeoutput">ans =
+z^4 - (18*z^3)/5 + (99*z^2)/20 - (767*z)/250 + 18/25
+ans =
+   0.9500 + 0.3122i
+   0.9500 - 0.3122i
+   0.9000 + 0.0000i
+   0.8000 + 0.0000i
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear; close all; clc;
+%% Problem 1
+figure(1);
+Ts = 0.4;
+
+Gs = tf(0.5, [1 0.5])
+Gscl = feedback(Gs,1)
+
+Gz = c2d(Gs, Ts)
+Gzcl = feedback(Gz, 1)
+hold on;
+step(Gscl);
+step(Gzcl);
+
+hold off;
+
+%% problem 2
+figure(2);
+Ts = 0.6;
+
+Gs = tf(2,[1 0.5])
+Gz = c2d(Gs, Ts)
+Gzcl = feedback(Gz, 0.04)
+
+hold on;
+step(0.4*Gzcl)
+hold off;
+
+%% problem 3
+figure(3);
+hold on;
+
+
+Gs = tf(1, [1 1 0])
+Gscl = feedback(Gs, 1)
+step(Gscl);
+
+% T = 1s
+Ts = 1;
+Gz = c2d(Gs, Ts);
+Gzcl = feedback(Gz, 1)
+log(pole(Gzcl))/Ts
+step(Gzcl);
+
+% T = 0.5s
+Ts = 0.5;
+Gz = c2d(Gs, Ts);
+Gzcl = feedback(Gz, 1)
+log(pole(Gzcl))/Ts
+step(Gzcl);
+
+% T = 0.1s
+Ts = 0.1;
+Gz = c2d(Gs, Ts);
+Gzcl = feedback(Gz, 1)
+log(pole(Gzcl))/Ts
+step(Gzcl);
+hold off;
+
+%% problem 4
+hold on;
+Gs = tf(1, [1 1]);
+Ts = 1;
+Gz = c2d(Gs, Ts)
+
+hold off;
+
+%% Problem 5
+syms z
+C = (z-0.9)*(z-0.8)*(z^2-1.9*z+1);
+expand(C)
+roots([1 -3.6 4.95 -3.068 0.72])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>
