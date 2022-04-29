@@ -1,8 +1,8 @@
  close all; clc;
-L = 100.8e-3;   % 100.8uH
-R = 100;        % 100Ohms
-C = 10e-5;      % 10uF
-Vref = 10;      % 10V
-Vin = 24;       % 24V
-
+L = 180e-6;   % 100.8uH
+R = 40;        % 100Ohms
+C = 150e-6;      % 10uF
+Vref = 15;      % 10V
+Vin = 6;       % 24V
+dc = 0.5;
 plot(out)
