@@ -1,6 +1,6 @@
 close all; clear; clc;
 
-%% Problem 7 (7.13)
+%% Problem 6 (7.13)
 sigma = [10e-1 10e-2 10e-3 10e-4];
 L = 1000;
 sig = zeros([L/2 2]);
