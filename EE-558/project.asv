@@ -2,12 +2,12 @@ clear; close all; clc;
 
 
 %% Problem 1
-x = 1:0.01:10^0.5;
-x = 20*log10(x);
-x1 = x.^0.5;
-x2 = (x*2).^0.5;
+xdB = 0:1:10;
+x = 10.^(xdB/10);
+x1 = sqrt(x);
+x2 = sqrt(x*2);
 
-%loglog(x, qfunc(x1), x, qfunc(x2));
+%semilogy(xdB, qfunc(x1), xdB, qfunc(x2));
 %title("BER Preformance of BASK and BPSK");
 %ylabel("BER");
 %xlabel("Eb/No (dB)");
@@ -16,12 +16,17 @@ x2 = (x*2).^0.5;
 %% Problem 2
 L = 10;
 n = 100;         % upsample amount
+
 Eb = 1;
 No = 10^-3;
-Fc = n;       % carrier frequency
+
+Fc = 100;       % carrier frequency
 Tc = 1/Fc;
 
-t1 = Tc:Tc:Tc*n*L;
+Fs = 10000;
+Ts = 1/Fs;
+
+t1 = Ts:Ts:Ts*n*L;
 t1 = t1.';
 
 % random message
@@ -64,7 +69,7 @@ figure(2);
 subplot(2,2,1);
 hold on;
 plot(t1, BPSKuS);
-sig1 = BPSKuS .* cos(2*pi**t1);
+sig1 = BPSKuS .* cos(2*pi*Fc*t1);
 plot(t1, sig1);
 
 subplot(2,2,2);
@@ -75,17 +80,22 @@ plot(t1, tsig1);
 
 % Reciever
 subplot(2,2,3);
-rsig1 = tsig1 .* cos(2*pi*t1);  % demodulation
+
+rsig1 = tsig1 .* cos(2*pi*Fc*t1);  % demodulation
 plot(t1, rsig1);
 
 subplot(2,2,4);
-rsig1 = lowpass(rsig1, 1, 1000);
-plot(1:length(rsig1), rsig1);
+
+%rsig1 = lowpass(rsig1, ());
+%filter = fir1(1024, 
+plot(t1, rsig1);
+
+
 for i = 1:L
-    if(sig1(i) <= 0)
+    if(rsig1(i) <= 0)
         rsig1(i) = -1;
     end
-    if(sig1(i) > 0)
+    if(srig1(i) > 0)
         rsig1(i)  = 1;
     end
 
