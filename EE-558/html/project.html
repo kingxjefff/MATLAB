@@ -1,0 +1,661 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>project</title><meta name="generator" content="MATLAB 9.12"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-05-10"><meta name="DC.source" content="project.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">EE558 MATLAB Project     Andrew Jefferson    825333113</a></li><li><a href="#3">Problem 1</a></li><li><a href="#4">Problem 2</a></li><li><a href="#6">Gray QPSK</a></li><li><a href="#8">BER Plot</a></li></ul></div><pre class="codeinput">clear; close <span class="string">all</span>; clc;
+</pre><h2 id="2">EE558 MATLAB Project     Andrew Jefferson    825333113</h2><h2 id="3">Problem 1</h2><pre class="codeinput">xdB = 0:0.5:10;
+x = 10.^(xdB/10);
+x1 = sqrt(x);
+x2 = sqrt(x*2);
+</pre><h2 id="4">Problem 2</h2><pre class="codeinput">L = 100000;     <span class="comment">% Bit length</span>
+n = 10;         <span class="comment">% upsample amount</span>
+
+Eb = 1;         <span class="comment">% bit energy</span>
+No = (10.^(xdB/10)).^-1;
+
+Fc = 1000;      <span class="comment">% carrier frequency</span>
+Tc = 1/Fc;      <span class="comment">% carrier period</span>
+
+Fs = 10000;     <span class="comment">% sample rate</span>
+Ts = 1/Fs;      <span class="comment">% sample period</span>
+
+t1 = Ts:Ts:Ts*n*L;  <span class="comment">% time</span>
+t1 = t1.';
+
+
+<span class="keyword">for</span> w = 1:length(No)    <span class="comment">% main FOR loop</span>
+</pre><pre class="codeinput"><span class="comment">% random message</span>
+BPSK = randi([0, 1], L, 1);
+BASK = randi([0, 1], L, 1);
+
+noise = randn([L*n 1]);
+
+<span class="keyword">for</span> i = 1:L
+   <span class="keyword">switch</span>(BPSK(i))
+       <span class="keyword">case</span> 0
+            BPSK(i) = -1;
+       <span class="keyword">case</span> 1
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% for i = 1:L</span>
+<span class="comment">%     if(BASK(i) == 1)</span>
+<span class="comment">%         BASK(i) = 2^0.5;</span>
+<span class="comment">%     end</span>
+<span class="comment">% end</span>
+
+<span class="comment">% up sampling for BPSK</span>
+BPSKuS = zeros([L*n, 1]);
+<span class="keyword">for</span> i = 1:L
+    <span class="keyword">switch</span>(BPSK(i))
+       <span class="keyword">case</span> -1
+           <span class="keyword">for</span> j = 1:n
+            BPSKuS(j + (i-1)*n) = -1;
+           <span class="keyword">end</span>
+       <span class="keyword">case</span> 1
+           <span class="keyword">for</span> j = 1:n
+            BPSKuS(j + (i-1)*n) = 1;
+           <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% up sampling for BASK</span>
+BASKuS = zeros([L*n, 1]);
+<span class="keyword">for</span> i = 1:L
+    <span class="keyword">if</span>(BASK(i) == 0)
+           <span class="keyword">for</span> j = 1:n
+            BASKuS(j + (i-1)*n) = 0;
+           <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    <span class="keyword">if</span>(BASK(i) &gt; 0)
+           <span class="keyword">for</span> j = 1:n
+            BASKuS(j + (i-1)*n) = sqrt(2);
+           <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% BPSK transmitter</span>
+
+sig1 = BPSKuS .* cos(2*pi*Fc*t1);       <span class="comment">% modulation</span>
+
+tsig1 = sig1 + sqrt(No(w)/2) * noise;   <span class="comment">% noise added</span>
+
+<span class="comment">% BPSK Reciever</span>
+
+
+rsig1 = tsig1 .* cos(2*pi*Fc*t1);        <span class="comment">% demodulation</span>
+
+rsig1 = lowpass(rsig1, (n/(Fs/2)));     <span class="comment">% low pass filter</span>
+
+rsig1 = rsig1(n/2:n:L*n-n/2);           <span class="comment">% Sampling signal at bitrate</span>
+
+<span class="comment">% BPSK Desision Threshhold</span>
+<span class="keyword">for</span> i = 1:L
+    <span class="keyword">if</span>(rsig1(i) &lt;= 0)
+        rsig1(i) = -1;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span>(rsig1(i) &gt; 0)
+        rsig1(i)  = 1;
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+errorCount1 = 0;
+<span class="comment">% BPSK error</span>
+<span class="keyword">for</span> i = 1:L
+    <span class="keyword">if</span>(BPSK(i) ~= rsig1(i))
+        errorCount1 = errorCount1 + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+BPSKerror(w, 1) = errorCount1/L;
+
+<span class="comment">%----------------------------------------------------------------------</span>
+
+<span class="comment">%BASK transmitter</span>
+
+sig2 = BASKuS .* cos(2*pi*Fc*t1);       <span class="comment">% modulation</span>
+
+tsig2 = sig2 + sqrt(No(w)/2) * noise;   <span class="comment">% noise added</span>
+
+<span class="comment">% BASK Reciever</span>
+
+
+rsig2 = tsig2 .* cos(2*pi*Fc*t1);       <span class="comment">% demodulation</span>
+
+rsig2 = lowpass(rsig2, (n/(Fs/2)));     <span class="comment">% low pass filter</span>
+
+rsig2 = rsig2(n/2:n:L*n-n/2);           <span class="comment">% Sampling signal at bitrate</span>
+
+<span class="comment">% BASK Desision Threshhold</span>
+<span class="keyword">for</span> i = 1:L
+    <span class="keyword">if</span>(rsig2(i) &lt;= sqrt(2)/4)
+        rsig2(i) = 0;
+    <span class="keyword">end</span>
+    <span class="keyword">if</span>(rsig2(i) &gt; sqrt(2)/4)
+        rsig2(i)  = 1;
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span>
+
+errorCount2 = 0;
+<span class="comment">% BASK error</span>
+<span class="keyword">for</span> k = 1:L
+    <span class="keyword">if</span>(BASK(k) ~= rsig2(k))
+        errorCount2 = errorCount2 + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+BASKerror(w, 1) = errorCount2/L;
+</pre><h2 id="6">Gray QPSK</h2><pre class="codeinput">Es = sqrt(2)/4;
+inphase = zeros([L/2 1]);
+quatrature = zeros([L/2 1]);
+
+grayQPSK = randi([0,1], L, 1);
+noise = randn([L*n 1]);
+
+t2 = Ts:Ts:Ts*0.5*L*n;          <span class="comment">% time</span>
+t2 = t2.';
+
+<span class="comment">% Gray Encoding of signal</span>
+<span class="keyword">for</span> i = 1:L/2
+
+   <span class="keyword">switch</span> (grayQPSK(2*i - 1))
+       <span class="keyword">case</span> 0
+
+           <span class="keyword">switch</span>(grayQPSK(2*i))
+               <span class="keyword">case</span> 0
+                   inphase(i, 1) = Es;
+                   quatrature(i, 1) = Es;
+               <span class="keyword">case</span> 1
+                   inphase(i, 1) = -Es;
+                   quatrature(i, 1) = Es;
+           <span class="keyword">end</span>
+       <span class="keyword">case</span> 1
+
+           <span class="keyword">switch</span>(grayQPSK(2*i))
+               <span class="keyword">case</span> 1
+                   inphase(i, 1) = -Es;
+                   quatrature(i, 1) = -Es;
+               <span class="keyword">case</span> 0
+                   inphase(i, 1) = Es;
+                   quatrature(i, 1) = -Es;
+           <span class="keyword">end</span>
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="comment">% % up sampling for BPSK</span>
+inphaseUS = repelem(inphase, n*2);
+quatratureUS = repelem(quatrature, n*2);
+
+<span class="comment">% Gray QPSK transmitter</span>
+
+sigI = inphaseUS .* cos(2*pi*Fc*t1);       <span class="comment">% Inphase modulation</span>
+sigQ = quatratureUS .* sin(2*pi*Fc*t1);    <span class="comment">% Quatrature modulation</span>
+
+QPSKsig = sigI + sigQ;                      <span class="comment">% sum signal for transmit</span>
+tQPSKsig = QPSKsig + sqrt(No(w)/2) * noise;       <span class="comment">% noise added</span>
+
+
+
+<span class="comment">% QPSK Reciever</span>
+
+<span class="comment">% inPhase portion</span>
+rQPSKsigI = tQPSKsig .* cos(2*pi*Fc*t1);       <span class="comment">% demodulation</span>
+
+rQPSKsigI = lowpass(rQPSKsigI, (n/(Fs/2)));     <span class="comment">% low pass filter</span>
+
+rinphase = rQPSKsigI(n:2*n:L*n-n);           <span class="comment">% Sampling signal at bitrate</span>
+
+<span class="comment">% quatrature portion</span>
+rQPSKsigQ = tQPSKsig .* sin(2*pi*Fc*t1);       <span class="comment">% demodulation</span>
+
+rQPSKsigQ = lowpass(rQPSKsigQ, (n/(Fs/2)));     <span class="comment">% low pass filter</span>
+
+rquatrature = rQPSKsigQ(n:2*n:L*n-n);           <span class="comment">% Sampling signal at bitrate</span>
+
+
+<span class="comment">% decision Treshold</span>
+<span class="keyword">for</span> i = 1:L/2
+    <span class="keyword">if</span>(rinphase(i) &gt; 0)
+
+        <span class="keyword">if</span>(rquatrature(i) &gt; 0)
+            rgrayQPSK(2*i-1) = 0;
+            rgrayQPSK(2*i) = 0;
+
+        <span class="keyword">else</span>(rquatrature(i) &lt;= 0);
+            rgrayQPSK(2*i-1) = 1;
+            rgrayQPSK(2*i) = 0;
+        <span class="keyword">end</span>
+
+    <span class="keyword">else</span>(rinphase(i) &lt;= 0);
+        <span class="keyword">if</span>(rquatrature(i) &gt; 0)
+            rgrayQPSK(2*i-1) = 0;
+            rgrayQPSK(2*i) = 1;
+
+        <span class="keyword">else</span>(rquatrature(i) &lt;= 0);
+            rgrayQPSK(2*i-1) = 1;
+            rgrayQPSK(2*i) = 1;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+errorCount3 = 0;
+<span class="comment">% QPSK error</span>
+<span class="keyword">for</span> i = 1:L
+    <span class="keyword">if</span>(grayQPSK(i) ~= rgrayQPSK(i))
+        errorCount3 = errorCount3 + 1;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+QPSKerror(w, 1) = errorCount3/L;
+</pre><pre class="codeinput"><span class="keyword">end</span> <span class="comment">% end of main FOR loop</span>
+</pre><h2 id="8">BER Plot</h2><pre class="codeinput">BER = semilogy(xdB, qfunc(x1), xdB, qfunc(x2), <span class="keyword">...</span>
+    xdB, BASKerror, xdB, BPSKerror, <span class="keyword">...</span>
+     xdB, QPSKerror);
+
+<span class="keyword">for</span> i =1:5
+    BER(i).LineWidth = 2;
+<span class="keyword">end</span>
+
+BER(1).Color = <span class="string">'red'</span>;
+BER(2).Color = <span class="string">'blue'</span>;
+BER(3).Color = <span class="string">'red'</span>;
+BER(4).Color = <span class="string">'blue'</span>;
+BER(5).Color = <span class="string">'green'</span>;
+BER(3).LineStyle = <span class="string">'-.'</span>;
+BER(4).LineStyle = <span class="string">'-.'</span>;
+BER(5).LineStyle = <span class="string">'-.'</span>;
+
+grid <span class="string">on</span>;
+
+legend(<span class="string">'Analytical BASK'</span>,<span class="string">'Analytical BPSK and Gray QPSK'</span>, <span class="keyword">...</span>
+    <span class="string">'Numerical BASK'</span>, <span class="string">'Numerical BPSK'</span>, <span class="keyword">...</span>
+    <span class="string">'Numerical Gray QPSK'</span>, <span class="string">'Location'</span>,<span class="string">'southwest'</span>);
+title(<span class="string">"BER Preformance of BASK, BPSK and Gray QPSK"</span>);
+ylabel(<span class="string">"BER"</span>);
+xlabel(<span class="string">"Eb/No (dB)"</span>);
+</pre><img vspace="5" hspace="5" src="project_01.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear; close all; clc;
+%% EE558 MATLAB Project     Andrew Jefferson    825333113
+
+%% Problem 1
+xdB = 0:0.5:10;
+x = 10.^(xdB/10);
+x1 = sqrt(x);
+x2 = sqrt(x*2);
+
+
+
+
+
+%% Problem 2
+
+L = 100000;     % Bit length
+n = 10;         % upsample amount
+
+Eb = 1;         % bit energy
+No = (10.^(xdB/10)).^-1;
+
+Fc = 1000;      % carrier frequency
+Tc = 1/Fc;      % carrier period
+
+Fs = 10000;     % sample rate
+Ts = 1/Fs;      % sample period
+
+t1 = Ts:Ts:Ts*n*L;  % time 
+t1 = t1.';
+
+
+for w = 1:length(No)    % main FOR loop
+
+% random message
+BPSK = randi([0, 1], L, 1);
+BASK = randi([0, 1], L, 1);
+
+noise = randn([L*n 1]);
+
+for i = 1:L
+   switch(BPSK(i))
+       case 0
+            BPSK(i) = -1;
+       case 1
+    end
+end
+
+% for i = 1:L
+%     if(BASK(i) == 1)
+%         BASK(i) = 2^0.5;
+%     end
+% end
+
+% up sampling for BPSK
+BPSKuS = zeros([L*n, 1]);
+for i = 1:L
+    switch(BPSK(i))
+       case -1
+           for j = 1:n
+            BPSKuS(j + (i-1)*n) = -1;
+           end
+       case 1
+           for j = 1:n
+            BPSKuS(j + (i-1)*n) = 1;
+           end
+    end
+end
+
+% up sampling for BASK
+BASKuS = zeros([L*n, 1]);
+for i = 1:L
+    if(BASK(i) == 0)
+           for j = 1:n
+            BASKuS(j + (i-1)*n) = 0;
+           end
+    end
+    if(BASK(i) > 0)
+           for j = 1:n
+            BASKuS(j + (i-1)*n) = sqrt(2);
+           end
+    end
+end
+
+% BPSK transmitter
+
+sig1 = BPSKuS .* cos(2*pi*Fc*t1);       % modulation
+
+tsig1 = sig1 + sqrt(No(w)/2) * noise;   % noise added
+
+% BPSK Reciever
+
+
+rsig1 = tsig1 .* cos(2*pi*Fc*t1);        % demodulation
+
+rsig1 = lowpass(rsig1, (n/(Fs/2)));     % low pass filter
+
+rsig1 = rsig1(n/2:n:L*n-n/2);           % Sampling signal at bitrate
+
+% BPSK Desision Threshhold
+for i = 1:L
+    if(rsig1(i) <= 0)
+        rsig1(i) = -1;
+    end
+    if(rsig1(i) > 0)
+        rsig1(i)  = 1;
+    end
+
+end
+
+errorCount1 = 0;
+% BPSK error
+for i = 1:L
+    if(BPSK(i) ~= rsig1(i))
+        errorCount1 = errorCount1 + 1;
+    end
+end
+BPSKerror(w, 1) = errorCount1/L;
+
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+
+%BASK transmitter
+
+sig2 = BASKuS .* cos(2*pi*Fc*t1);       % modulation
+
+tsig2 = sig2 + sqrt(No(w)/2) * noise;   % noise added
+
+% BASK Reciever
+
+
+rsig2 = tsig2 .* cos(2*pi*Fc*t1);       % demodulation
+
+rsig2 = lowpass(rsig2, (n/(Fs/2)));     % low pass filter
+
+rsig2 = rsig2(n/2:n:L*n-n/2);           % Sampling signal at bitrate
+
+% BASK Desision Threshhold
+for i = 1:L
+    if(rsig2(i) <= sqrt(2)/4)
+        rsig2(i) = 0;
+    end
+    if(rsig2(i) > sqrt(2)/4)
+        rsig2(i)  = 1;
+    end
+
+end
+
+errorCount2 = 0;
+% BASK error
+for k = 1:L
+    if(BASK(k) ~= rsig2(k))
+        errorCount2 = errorCount2 + 1;
+    end
+end
+BASKerror(w, 1) = errorCount2/L;
+
+
+
+%% Gray QPSK
+Es = sqrt(2)/4;
+inphase = zeros([L/2 1]);
+quatrature = zeros([L/2 1]);
+
+grayQPSK = randi([0,1], L, 1);
+noise = randn([L*n 1]);
+
+t2 = Ts:Ts:Ts*0.5*L*n;          % time
+t2 = t2.';
+
+% Gray Encoding of signal
+for i = 1:L/2
+
+   switch (grayQPSK(2*i - 1))
+       case 0
+           
+           switch(grayQPSK(2*i))
+               case 0
+                   inphase(i, 1) = Es;
+                   quatrature(i, 1) = Es;
+               case 1
+                   inphase(i, 1) = -Es;
+                   quatrature(i, 1) = Es;
+           end
+       case 1
+           
+           switch(grayQPSK(2*i))
+               case 1
+                   inphase(i, 1) = -Es;
+                   quatrature(i, 1) = -Es;
+               case 0
+                   inphase(i, 1) = Es;
+                   quatrature(i, 1) = -Es;
+           end
+   end
+end
+% % up sampling for BPSK
+inphaseUS = repelem(inphase, n*2);
+quatratureUS = repelem(quatrature, n*2);
+
+% Gray QPSK transmitter
+
+sigI = inphaseUS .* cos(2*pi*Fc*t1);       % Inphase modulation
+sigQ = quatratureUS .* sin(2*pi*Fc*t1);    % Quatrature modulation
+
+QPSKsig = sigI + sigQ;                      % sum signal for transmit
+tQPSKsig = QPSKsig + sqrt(No(w)/2) * noise;       % noise added
+
+
+
+% QPSK Reciever
+
+% inPhase portion
+rQPSKsigI = tQPSKsig .* cos(2*pi*Fc*t1);       % demodulation
+
+rQPSKsigI = lowpass(rQPSKsigI, (n/(Fs/2)));     % low pass filter
+
+rinphase = rQPSKsigI(n:2*n:L*n-n);           % Sampling signal at bitrate
+
+% quatrature portion
+rQPSKsigQ = tQPSKsig .* sin(2*pi*Fc*t1);       % demodulation
+
+rQPSKsigQ = lowpass(rQPSKsigQ, (n/(Fs/2)));     % low pass filter
+
+rquatrature = rQPSKsigQ(n:2*n:L*n-n);           % Sampling signal at bitrate
+
+
+% decision Treshold
+for i = 1:L/2
+    if(rinphase(i) > 0)
+        
+        if(rquatrature(i) > 0)
+            rgrayQPSK(2*i-1) = 0;
+            rgrayQPSK(2*i) = 0;
+        
+        else(rquatrature(i) <= 0);
+            rgrayQPSK(2*i-1) = 1;
+            rgrayQPSK(2*i) = 0;
+        end
+    
+    else(rinphase(i) <= 0);
+        if(rquatrature(i) > 0)
+            rgrayQPSK(2*i-1) = 0;
+            rgrayQPSK(2*i) = 1;
+        
+        else(rquatrature(i) <= 0);
+            rgrayQPSK(2*i-1) = 1;
+            rgrayQPSK(2*i) = 1;
+        end
+    end
+end
+
+errorCount3 = 0;
+% QPSK error
+for i = 1:L
+    if(grayQPSK(i) ~= rgrayQPSK(i))
+        errorCount3 = errorCount3 + 1;
+    end
+end
+QPSKerror(w, 1) = errorCount3/L;
+
+end % end of main FOR loop
+
+%% BER Plot 
+BER = semilogy(xdB, qfunc(x1), xdB, qfunc(x2), ...
+    xdB, BASKerror, xdB, BPSKerror, ...
+     xdB, QPSKerror);
+
+for i =1:5
+    BER(i).LineWidth = 2;
+end
+
+BER(1).Color = 'red';
+BER(2).Color = 'blue';
+BER(3).Color = 'red';
+BER(4).Color = 'blue';
+BER(5).Color = 'green';
+BER(3).LineStyle = '-.';
+BER(4).LineStyle = '-.';
+BER(5).LineStyle = '-.';
+
+grid on;
+
+legend('Analytical BASK','Analytical BPSK and Gray QPSK', ...
+    'Numerical BASK', 'Numerical BPSK', ...
+    'Numerical Gray QPSK', 'Location','southwest');
+title("BER Preformance of BASK, BPSK and Gray QPSK");
+ylabel("BER");
+xlabel("Eb/No (dB)");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>
